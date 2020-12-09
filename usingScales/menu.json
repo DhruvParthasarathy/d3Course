@@ -1,0 +1,27 @@
+
+[
+    {
+      "name": "button biriaani",
+      "orders": 200
+    },
+    {
+      "name": "chicken kuruma",
+      "orders": 600
+    },
+    {
+      "name": "adai dosai",
+      "orders": 300
+    },
+    {
+      "name": "aaloo paratha",
+      "orders": 900
+    },
+    {
+      "name": "tomato soup",
+      "orders": 1500
+    },
+    {
+      "name": "rasam saadam",
+      "orders": 750
+    }
+  ]
