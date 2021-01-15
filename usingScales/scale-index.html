@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar chart</title>
+</head>
+<body>
+    <div class="canvas">
+
+    </div>
+
+    <!--Configuring the db to fetch data from -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script> -->
+
+    <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyACTAaTNBzDLOdkTBh7j8yuCKDWUS_asjs",
+        authDomain: "datavizproject-205a8.firebaseapp.com",
+        projectId: "datavizproject-205a8",
+        storageBucket: "datavizproject-205a8.appspot.com",
+        messagingSenderId: "329768329540",
+        appId: "1:329768329540:web:da700ab1e7453a4c93f711",
+        measurementId: "G-58PPHF43D8"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    // firebase.analytics();
+
+
+    // The above lines have been directly copied from the firebase project (firebase SDK)
+
+    // The below line is used to create a db object using the configuration
+    const db = firebase.firestore();
+
+    // Additional setting mentioned in tutorial - mentioned that without the below setting we will get a warning in the console
+    db.settings({timestampsInSnapShots: true});
+
+
+    </script>
+
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="index.js"></script>
+
+
+</body>
+</html>
