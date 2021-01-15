@@ -33,7 +33,7 @@
 
     const yAxisGroup = graph.append('g');
 
-    const color = 'orange';
+    const color = 'pink';
 
 // SETTING UP SCALES ============================================
 
@@ -70,11 +70,13 @@
 
 
     // Formatting the axes
-    yAxis.ticks(3) // the value d here will be the value which is outputted by the yScale
+    yAxis.ticks(4) // the value d here will be the value which is outputted by the yScale
     .tickFormat( d => d + ' orders');
 
 
-
+    
+// creating a transition which we will use while updating graphs
+const t = d3.transition().duration(1500);
 
 // UPDATE FUNCTION
 
@@ -114,21 +116,28 @@ const update = (data) => {
 
     // Update the rectangle in the dom
     // xBandScale.bandwidth will trigger the function xBandScale.bandwidth() which will inturn return the width of each band / bar
-    rects.attr('width', xBandScale.bandwidth)
-    .attr('height', d => graphHeight - yLinearScale(d.orders)) // *Important
+    rects
+    // .attr('width', xBandScale.bandwidth)
     .attr('fill', color)
-    .attr('x', (d,i) => xBandScale(d.name))
-    .attr('y', (d) => yLinearScale(d.orders)); // *Important
+    .attr('x', (d,i) => xBandScale(d.name))  // the below steps will be applied by using the merge command on the enter selection
+    // .transition(t) // For updating existing dom elements, we just have to transition to the ending position
+    //     .attr('y', (d) => yLinearScale(d.orders)) // *Important
+    //     .attr('height', d => graphHeight - yLinearScale(d.orders)) // *Important
 
     // Step 5 Enter selection into dom
     // Append the enter selection elements to the dom
     rects.enter()
     .append('rect')
-    .attr('width', xBandScale.bandwidth)
-    .attr('height', d => graphHeight - yLinearScale(d.orders))  // *Important
+    // .attr('width', xBandScale.bandwidth) // commenting this out as we will be using a widthTween below the transition attribute
+    .attr('y', graphHeight) // we specify the starting conditions of height and y value here
+    .attr('height', 0)
     .attr('fill', color)
     .attr('x', (d,i) => xBandScale(d.name))
-    .attr('y', (d) => yLinearScale(d.orders)); // *Important
+    .merge(rects) // by using the following command, we ask d3 to do the steps below for the rects selection as well
+    .transition(t)  // we specify the transition duration after which we specify the ending conditions for the graph - only the stuff below the merge is applied to both groups
+        .attrTween('width', widthTween)
+        .attr('y', (d) => yLinearScale(d.orders)) // *Important
+        .attr('height', d => graphHeight - yLinearScale(d.orders))  // *Important
 
     // Calliing axes based on new data
 
@@ -141,7 +150,7 @@ const update = (data) => {
         xAxisGroup.selectAll('text')
         .attr('transform', `rotate(-40)`)
         .attr('text-anchor','end') // changing the text anchor from the middle of the text to the end of the text so that rotation happens with reapect to the end
-        .attr('fill','orange');
+        .attr('fill','brown');
 }
 
 
@@ -193,3 +202,20 @@ const update = (data) => {
         update(data);
     })
 
+// Tweens - these are used to defined custom transitions - we are going to create one for the width
+
+const widthTween = (d) => {
+
+    //define the interpolation
+    let i = d3.interpolate(0, xBandScale.bandwidth());
+
+    // return a function which takes in the time ticker - d3 will trigger this repeatedly with various values from 0 - 1
+    return function(t) {
+
+        // this will return the interpolated value at that time ticker
+        return i(t);
+    }
+
+    // So when we have attached the widthTween to the selection, the 
+    // bar will start at a zero width and will expand to the max width over time, based on the transition time given, the max width is defined by the x.bandWidth() function.
+}
